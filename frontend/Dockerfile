@@ -1,18 +1,16 @@
-# frontend/Dockerfile
-FROM node:20-alpine
-
+# --- Étape 1 : Build ---
+FROM node:20-alpine AS builder
 WORKDIR /app
-
-# Copier les fichiers de dépendances
 COPY package*.json ./
 
-# Installer les dépendances
-RUN npm install
+# C'EST ICI QU'IL FAUT AJOUTER LE DRAPEAU :
+RUN npm install --legacy-peer-deps
 
-# Copier le reste du code
 COPY . .
+RUN npm run build
 
-EXPOSE 5173
-
-# Lancer le serveur de dev Vite
-CMD ["npm", "run", "dev", "--", "--host"]
+# --- Étape 2 : Production ---
+FROM nginx:alpine
+COPY --from=builder /app/build /usr/share/nginx/html
+EXPOSE 80
+CMD ["nginx", "-g", "daemon off;"]
