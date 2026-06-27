@@ -31,7 +31,7 @@ class HomeController extends Controller
             $produits->where('nom', 'like', '%'.$key.'%')
             ->Orwhere('description', 'like', '%'.$key.'%');
         }
-       $produits = produits::select('*')->latest()->take(20)->get();
+      // $produits = produits::select('*')->latest()->take(20)->get();
        $searchproducts = produits::select('*')->latest()->take(10)->get();
        $rescentesproduits = produits::select('*')->take(10)->get();
       // $produitspromotions = produits::select('*')->
@@ -52,7 +52,7 @@ class HomeController extends Controller
        ->limit(10)->get();
 
        $services = Service::all();
-      return view('front.index', compact('rescentesproduits','searchproducts','produits','configs','banners','services','key','testimonials', 'categoryProducts'));
+      return view('front.index', compact('rescentesproduits','searchproducts','configs','banners','services','key','testimonials', 'categoryProducts'));
 
     }
      
