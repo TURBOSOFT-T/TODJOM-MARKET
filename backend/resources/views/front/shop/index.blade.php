@@ -260,9 +260,7 @@
                                     <!-- End Single Product  -->
                                 </div>
                                 <div class="text-center pt--20">
-                                    <ul class="pagination-list">
-                                        {{ $produits->links('pagination::bootstrap-4') }}
-                                    </ul>
+                                   
                                 </div>
                             </div>
                         </div>
