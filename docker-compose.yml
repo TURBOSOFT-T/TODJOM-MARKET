@@ -1,18 +1,13 @@
 version: '3.8'
 
 services:
-  # 1. Le Frontend React / Next.js
+  # 1. Le Frontend React
   frontend:
     build:
       context: ./frontend
-      # En option : transmettez l'URL de l'API au moment du build si Next.js l'exige
-      args:
-        - NEXT_PUBLIC_API_URL=https://todjom.greenlyfes.com/api
     container_name: todjom_frontend
     ports:
-      - "3000:3000" # 👈 Corrigé : 3000 vers 3000 (standard pour Node/Next.js)
-    environment:
-      - NEXT_PUBLIC_API_URL=https://todjom.greenlyfes.com/api # 👈 Forcé ici
+      - "3000:3000" # 👈 On change "3000:80" par "3000:3000"
     networks:
       - app-network
     restart: always
@@ -30,12 +25,12 @@ services:
       - db
     restart: always
 
-  # 3. Serveur Web Nginx (Reverse Proxy interne)
+  # 3. Serveur Web Nginx (Intermédiaire obligatoire pour PHP-FPM)
   nginx:
     image: nginx:alpine
     container_name: todjom_nginx
     ports:
-      - "8000:80" # Accessible par Nginx VPS sur http://127.0.0.1:8000
+      - "8000:80" # Votre API Laravel sera accessible sur http://localhost:8000
     volumes:
       - ./backend:/var/www
       - ./nginx.conf:/etc/nginx/conf.d/default.conf
@@ -45,16 +40,16 @@ services:
       - backend
     restart: always
 
-  # 4. Base de données MySQL
+  # 4. Base de données MySQL (Sécurisée)
   db:
     image: mysql:8.0
     container_name: todjom_db
     environment:
-      document:
       MYSQL_DATABASE: todjom_market_db
       MYSQL_USER: todjom_user
       MYSQL_PASSWORD: todjom_password
       MYSQL_ROOT_PASSWORD: root_secure_password
+    # Le port 3306 est interne au réseau Docker pour éviter les conflits sur votre VPS
     volumes:
       - dbdata:/var/lib/mysql
     networks:
