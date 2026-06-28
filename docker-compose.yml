@@ -7,7 +7,7 @@ services:
       context: ./frontend
     container_name: todjom_frontend
     ports:
-      - "3000:3000" # 👈 On change "3000:80" par "3000:3000"
+      - "3000:80" # Accessible sur le port 3000
     networks:
       - app-network
     restart: always
