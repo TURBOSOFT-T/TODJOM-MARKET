@@ -9,8 +9,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title> @yield('titre') - (Admin) {{ config('app.name') }}</title>
     <!--favicon-->
-    <link rel="icon" href="{{ Storage::url($config->icon) }}" type="image/png" />
+    <!-- Favicon -->
+    <link rel="shortcut icon" type="image/x-icon" href="{{ Storage::url($config->icon ?? ' ') }}">
 
+ 
     <!--plugins-->
     <link href="/admin/assets/plugins/perfect-scrollbar/css/perfect-scrollbar.css" rel="stylesheet">
     <link href="/admin/assets/plugins/metismenu/css/metisMenu.min.css" rel="stylesheet">
