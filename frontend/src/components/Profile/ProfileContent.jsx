@@ -4,7 +4,7 @@ import { useSelector } from "react-redux";
 import axios from "axios";
 import toast, { Toaster } from "react-hot-toast";
 import styles from "../../styles/styles";
-
+import { server } from "../../server";
 const ProfileContent = ({ active }) => {
   const { user } = useSelector((state) => state.user);
 
@@ -57,7 +57,7 @@ const ProfileContent = ({ active }) => {
       }
 
       const res = await axios.post(
-        "http://localhost:8000/api/update-profile",
+        `${server}/update-profile`,
         formData,
         {
           headers: {
