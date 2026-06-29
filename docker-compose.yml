@@ -34,9 +34,9 @@ services:
     networks:
       - app-network
     restart: always
-    command: php-fpm
-    ports:
-      - "9000:9000"
+
+ 
+
   # =====================
   # FRONTEND (build only)
   # =====================
@@ -54,20 +54,22 @@ services:
   # =====================
   # NGINX (gateway)
   # =====================
+   # =====================
+  # NGINX (ENTRYPOINT)
+  # =====================
   nginx:
     image: nginx:alpine
     container_name: todjom_nginx
     restart: always
     ports:
-      - "8080:80"
+      - "80:80"
+      - "443:443"
     volumes:
       - ./backend:/var/www
-      - frontend_build:/usr/share/nginx/html
-      - ./nginx.conf:/etc/nginx/conf.d/default.conf
+      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
     depends_on:
       - backend
-    networks:
-      - app-network
+   
 
 networks:
   app-network:
