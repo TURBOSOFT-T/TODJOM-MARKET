@@ -23,18 +23,19 @@ services:
   # BACKEND (Laravel)
   # =====================
   backend:
-    build:
-      context: ./backend
-    container_name: todjom_backend
-    working_dir: /var/www
-    volumes:
-      - ./backend:/var/www
-    depends_on:
-      - db
-    networks:
-      - app-network
-    restart: always
-
+  build:
+    context: ./backend
+  container_name: todjom_backend
+  working_dir: /var/www
+  volumes:
+    - ./backend:/var/www
+  restart: always
+  depends_on:
+    - db
+  ports:
+    - "127.0.0.1:9000:9000"
+  networks:
+    - app-network
  
 
   # =====================

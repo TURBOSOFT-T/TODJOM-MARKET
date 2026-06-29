@@ -258,7 +258,7 @@ return [
     |--------------------------------------------------------------------------
     */
 
-    'description' => 'TuroSoft-Store est une boutique en ligne spécialisée dans la vente de produits informatiques, électroniques et divers, offrant des articles de qualité à des prix compétitifs. Nous nous engageons à fournir un service fiable, rapide et sécurisé afin de satisfaire pleinement nos clients. Avec TuroSoft-Store, profitez des meilleures offres et d’une expérience d’achat simple et pratique.',
+    'description' => 'TODJOM MARKET est une boutique en ligne spécialisée dans la vente de produits informatiques, électroniques et divers, offrant des articles de qualité à des prix compétitifs. Nous nous engageons à fournir un service fiable, rapide et sécurisé afin de satisfaire pleinement nos clients. Avec TuroSoft-Store, profitez des meilleures offres et d’une expérience d’achat simple et pratique.',
     'author' => 'TurboSoft-Store',
 
 ];

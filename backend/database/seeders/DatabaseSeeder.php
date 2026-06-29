@@ -145,7 +145,7 @@ class DatabaseSeeder extends Seeder
 
          $cat = new config();
         $cat->frais = '15';
-        $cat->description = 'TurboSoft-Store est une boutique en ligne spécialisée dans la vente de produits informatiques, électroniques et divers, offrant des articles de qualité à des prix compétitifs.';
+        $cat->description = 'TODJOM MARKET est une boutique en ligne spécialisée dans la vente de produits informatiques, électroniques et divers, offrant des articles de qualité à des prix compétitifs.';
        $cat->telephone= '672959424';
        $cat->email='turbosoftstore@gmail.com';
        $cat->addresse='Douala,  Ngonsoua nkoululum marché des sacs';
