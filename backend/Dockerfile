@@ -2,21 +2,24 @@ FROM php:8.3-fpm
 
 WORKDIR /var/www
 
-# dépendances système
 RUN apt-get update && apt-get install -y \
-    zip unzip curl libpng-dev libonig-dev libxml2-dev
+    git \
+    unzip \
+    zip \
+    curl \
+    libpng-dev \
+    libonig-dev \
+    libxml2-dev
 
-# extensions PHP
-RUN docker-php-ext-install pdo pdo_mysql mbstring
+RUN docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd
 
-# composer
-COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
+COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
 COPY . .
 
-RUN composer install
+RUN composer install --no-dev --optimize-autoloader
 
-RUN chown -R www-data:www-data /var/www/storage /var/www/bootstrap/cache
+RUN chown -R www-data:www-data storage bootstrap/cache
 
 EXPOSE 9000
 
