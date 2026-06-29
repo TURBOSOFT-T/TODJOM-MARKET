@@ -2,54 +2,9 @@ version: '3.8'
 
 services:
 
-  # =========================
-  # 1. FRONTEND (React build)
-  # =========================
-  frontend:
-    build:
-      context: ./frontend
-    container_name: todjom_frontend
-    networks:
-      - app-network
-    restart: always
-
-  # =========================
-  # 2. BACKEND (Laravel PHP-FPM)
-  # =========================
-  backend:
-    build:
-      context: ./backend
-    container_name: todjom_backend
-    volumes:
-      - ./backend:/var/www
-    networks:
-      - app-network
-    depends_on:
-      - db
-    restart: always
-
-  # =========================
-  # 3. NGINX (gateway unique)
-  # =========================
-  nginx:
-    image: nginx:alpine
-    container_name: todjom_nginx
-    ports:
-      - "80:80"
-    volumes:
-      - ./backend:/var/www
-      - ./frontend/build:/usr/share/nginx/html
-      - ./nginx.conf:/etc/nginx/conf.d/default.conf
-    networks:
-      - app-network
-    depends_on:
-      - backend
-      - frontend
-    restart: always
-
-  # =========================
-  # 4. DATABASE
-  # =========================
+  # =====================
+  # DATABASE
+  # =====================
   db:
     image: mysql:8.0
     container_name: todjom_db
@@ -64,9 +19,59 @@ services:
     networks:
       - app-network
 
+  # =====================
+  # BACKEND (Laravel)
+  # =====================
+  backend:
+    build:
+      context: ./backend
+    container_name: todjom_backend
+    working_dir: /var/www
+    volumes:
+      - ./backend:/var/www
+    depends_on:
+      - db
+    networks:
+      - app-network
+    restart: always
+    command: php-fpm
+
+  # =====================
+  # FRONTEND (build only)
+  # =====================
+  frontend:
+    build:
+      context: ./frontend
+    container_name: todjom_frontend
+    volumes:
+      - frontend_build:/app/build
+    networks:
+      - app-network
+    restart: "no"
+    command: npm run build
+
+  # =====================
+  # NGINX (gateway)
+  # =====================
+  nginx:
+    image: nginx:alpine
+    container_name: todjom_nginx
+    restart: always
+    ports:
+      - "80:80"
+    volumes:
+      - ./backend:/var/www
+      - frontend_build:/usr/share/nginx/html
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - backend
+    networks:
+      - app-network
+
 networks:
   app-network:
     driver: bridge
 
 volumes:
   dbdata:
+  frontend_build:
