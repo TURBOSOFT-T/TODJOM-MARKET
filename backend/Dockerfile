@@ -2,21 +2,51 @@ FROM php:8.3-fpm
 
 WORKDIR /var/www
 
-# dépendances système
+# Dépendances système
 RUN apt-get update && apt-get install -y \
-    zip unzip curl libpng-dev libonig-dev libxml2-dev
+    git \
+    curl \
+    unzip \
+    zip \
+    libzip-dev \
+    libpng-dev \
+    libjpeg62-turbo-dev \
+    libfreetype6-dev \
+    libonig-dev \
+    libxml2-dev \
+    libicu-dev \
+    libxslt1-dev \
+    libpq-dev \
+    libsqlite3-dev \
+    && rm -rf /var/lib/apt/lists/*
 
-# extensions PHP
-RUN docker-php-ext-install pdo pdo_mysql mbstring
+# Configuration GD
+RUN docker-php-ext-configure gd \
+    --with-freetype \
+    --with-jpeg
 
-# composer
-COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
+# Installation des extensions PHP
+RUN docker-php-ext-install \
+    pdo \
+    pdo_mysql \
+    mbstring \
+    zip \
+    exif \
+    pcntl \
+    bcmath \
+    gd \
+    intl
+
+# Composer
+COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
 COPY . .
 
-RUN composer install
+# Installation des dépendances Laravel
+RUN composer install --no-interaction --prefer-dist --optimize-autoloader
 
-RUN chown -R www-data:www-data /var/www/storage /var/www/bootstrap/cache
+# Permissions
+RUN chown -R www-data:www-data storage bootstrap/cache
 
 EXPOSE 9000
 
